@@ -50,10 +50,18 @@ public class API_MainActivity extends AppCompatActivity {
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
+
+            //https://api.spotify.com/v1/users/hello
+            //http://services.hanselandpetal.com/feeds/flowers.json
+            //https://restcountries.eu/rest/v1/all
+            //https://restcountries.eu/rest/v1/name/eesti
+
+
+
             @Override
             public void onClick(View view) {
                 if(isOnLine()){
-                    requestData();
+                    requestData("https://restcountries.eu/rest/v1/name/brasil");
                 }else {
                     Toast.makeText(getApplicationContext(), "Network isn´t available!", Toast.LENGTH_LONG).show();
                 }
@@ -62,9 +70,9 @@ public class API_MainActivity extends AppCompatActivity {
     }
 
     //Code to request the informations
-    private void requestData() {
+    private void requestData(String uri) {
         MyTask task = new MyTask();
-        task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, "Param1", "Param2", "Param3");
+        task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, uri);
     }
 
     @Override
@@ -125,17 +133,8 @@ public class API_MainActivity extends AppCompatActivity {
         @Override //result              params
         protected String doInBackground(String... params) {
 
-            for (int i = 0; i <params.length ; i++) {
-                publishProgress("Working with " + params[i]);
-
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            return "Task complete!";
+            String content = HttpManager.getData(params[0]);
+            return content;
         }
 
         @Override
