@@ -61,6 +61,7 @@ public class API_MainActivity extends AppCompatActivity {
         });
     }
 
+    //Code to request the informations
     private void requestData() {
         MyTask task = new MyTask();
         task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, "Param1", "Param2", "Param3");
