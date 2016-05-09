@@ -48,20 +48,22 @@ public class API_MainActivity extends AppCompatActivity {
         output = (TextView) findViewById(R.id.textView);
         output.setMovementMethod(new ScrollingMovementMethod());
 
+        //https://api.spotify.com/v1/users/hello
+        //http://services.hanselandpetal.com/feeds/flowers.json
+        //https://restcountries.eu/rest/v1/all
+        //https://restcountries.eu/rest/v1/name/brasil
+
+
+        //Emulator IP: 10.0.2.2
+        //Genymotion IP: 10.0.3.2
+
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
-
-            //https://api.spotify.com/v1/users/hello
-            //http://services.hanselandpetal.com/feeds/flowers.json
-            //https://restcountries.eu/rest/v1/all
-            //https://restcountries.eu/rest/v1/name/eesti
-
-
 
             @Override
             public void onClick(View view) {
                 if(isOnLine()){
-                    requestData("https://restcountries.eu/rest/v1/name/brasil");
+                    requestData("http://10.0.2.2:1337/");
                 }else {
                     Toast.makeText(getApplicationContext(), "Network isn´t available!", Toast.LENGTH_LONG).show();
                 }
