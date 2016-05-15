@@ -115,13 +115,12 @@ public class API_MainActivity extends AppCompatActivity {
 
 
         if(bookList != null){
-//            for(Book book: countryList){
-//                output.append(book.getName() + "\n" + book.getDescription() + "\n" + book.getPrice() + "\n\n\n");
-//            }
                 rand =  new Random();
                 n = rand.nextInt(bookList.size());
                 Log.i("TESTE RANDOM", "" + n);
-            Book book = bookList.get(n);
+
+                //Getting just one random object
+                Book book = bookList.get(n);
                 output.setText(book.getName());
         }
 
