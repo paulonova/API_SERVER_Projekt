@@ -7,9 +7,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-/**
- * Created by Paulo Vila Nova on 2016-05-06.
- */
+
 public class HttpManager {
 
     public static String getData(String uri){

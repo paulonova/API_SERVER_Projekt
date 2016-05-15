@@ -6,10 +6,10 @@ import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.method.ScrollingMovementMethod;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class API_MainActivity extends AppCompatActivity {
 
@@ -29,6 +30,11 @@ public class API_MainActivity extends AppCompatActivity {
     * When the list are equals ZERO on preExecute ==> setVisible
     * When the list are != ZERO onPostExecute ==> setINVISIBLE*/
     List<MyTask> tasks;
+    List<Book> bookList;
+
+    Random rand;
+    int n;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +57,7 @@ public class API_MainActivity extends AppCompatActivity {
         //https://api.spotify.com/v1/users/hello
         //http://services.hanselandpetal.com/feeds/flowers.json
         //https://restcountries.eu/rest/v1/all
-        //https://restcountries.eu/rest/v1/name/brasil
+        //https://restcountries.eu/rest/v1/alpha/swe
 
 
         //Emulator IP: 10.0.2.2
@@ -62,8 +68,10 @@ public class API_MainActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View view) {
+
                 if(isOnLine()){
-                    requestData("http://10.0.2.2:1337/");
+                    output.setText("");
+                    requestData("http://10.0.2.2:1338/book/package.json");
                 }else {
                     Toast.makeText(getApplicationContext(), "Network isn´t available!", Toast.LENGTH_LONG).show();
                 }
@@ -71,10 +79,13 @@ public class API_MainActivity extends AppCompatActivity {
         });
     }
 
+
+
     //Code to request the informations
     private void requestData(String uri) {
         MyTask task = new MyTask();
         task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, uri);
+        //task.execute(uri);
     }
 
     @Override
@@ -99,9 +110,24 @@ public class API_MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    protected void updateDisplay(String message){
-        output.append(message + "\n");
+    protected void updateDisplay(){
+//        output.append(message + "\n");
+
+
+        if(bookList != null){
+//            for(Book book: countryList){
+//                output.append(book.getName() + "\n" + book.getDescription() + "\n" + book.getPrice() + "\n\n\n");
+//            }
+                rand =  new Random();
+                n = rand.nextInt(bookList.size());
+                Log.i("TESTE RANDOM", "" + n);
+            Book book = bookList.get(n);
+                output.setText(book.getName());
+        }
+
     }
+
+
 
     protected boolean isOnLine(){
         ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -123,7 +149,6 @@ public class API_MainActivity extends AppCompatActivity {
         //Execute before doInBackground()
         @Override
         protected void onPreExecute() {
-           updateDisplay("Starting task..");
 
             if(tasks.size() == 0){
                 pb.setVisibility(View.VISIBLE);
@@ -141,7 +166,8 @@ public class API_MainActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String result) {
-            updateDisplay(result);
+            bookList = JSONParse.parseFeed(result);
+            updateDisplay();
 
             tasks.remove(this);
             if(tasks.size() == 0){
@@ -153,7 +179,7 @@ public class API_MainActivity extends AppCompatActivity {
 
         @Override
         protected void onProgressUpdate(String... values) {
-            updateDisplay(values[0]);
+//            updateDisplay(values[0]);
         }
     }
 
